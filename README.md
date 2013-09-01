@@ -2,6 +2,7 @@ pong-leap-motion-js
 ===================
 
 A pong game using the Leap Motion as a controller written in Javascript for the CreateJS framework
+Try it at http://javierquevedo.com/Pong/Pong%20Motion/Pong.html
 
 ![PongMotion](Pong%20Motion/assets/screenshot.png)
 
@@ -19,6 +20,14 @@ Open http://localhost:8000/Pong%20Motion/Pong.html and enjoy!
 How to play
 ---------------
 Wave you hands up and down to raise or lower your pong bracket.
+
+
+About
+===================
+Copyright (c) 2013 Javier Quevedo
+Twitter: @senc01a
+Github: http://github.com/senc01a
+
 
 
 
