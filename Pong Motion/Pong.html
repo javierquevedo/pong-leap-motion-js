@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--
+/-----------------------------------------------------------------------------\
+|                                                                             |
+| Copyright (C) 2013 Javier Quevedo Fernandez. All rights reserved.           |
+|                              @senc01a                                       |
+|                      http://github.com/senc01a                              |
+|                                                                             |
+\-----------------------------------------------------------------------------/
+-->
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Pong Motion - Play Pong with your Leap Motion</title>
+    <link rel="stylesheet" href="assets/style.css" />
+    <script type="text/javascript" src="./assets/easeljs-NEXT.min.js"></script>
+    <script type="text/javascript" src="./assets/ndgmr.Collision.js"></script>
+    <script type="text/javascript" src="../src/tweenjs/Tween.js"></script>
+    <script type="text/javascript" src="../src/tweenjs/Ease.js"></script>
+    <script type="text/javascript" src="Pong.js"></script>
+    <script type="text/javascript" src="leap.js"></script>
+    <script type="text/javascript" src="LeapController.js"></script>
+    
+<script>
+
+  var stage;
+  var pong;
+  var gameFPS = 60;
+  var controllerOptions = {enableGestures: false};
+  var leapController;
+
+  function init(){
+    if (window.top != window) {
+      document.getElementById("header").style.display = "none";
+    }
+    
+    canvas = document.getElementById("canvas");
+    stage = new createjs.Stage(canvas);
+    stage.enableDOMEvents(true);
+
+    // Pong Game
+    pong = new Pong(stage);
+    addEventListener('score', onPlayerScore, false);     
+
+    // Leap Motion Controller
+    leapController = new LeapController();
+    addEventListener(leapDidUpdateEvent, onLeapUpdate);
+    leapController.start();
+    
+    createjs.Ticker.setFPS(gameFPS);
+    createjs.Ticker.addEventListener("tick", onTickerTick);
+
+    scoreDiv = document.getElementById("score");
+    scoreDiv.innerHTML = 'Score  0 - 0 ';
+    
+    stage.update();  
+  }
+
+  function onPlayerScore(e){
+    scoreDiv = document.getElementById("score");
+    scoreDiv.innerHTML = 'Score ' + e.leftPlayerScore + " - " + e.rightPlayerScore;
+  }
+
+  function onTickerTick(event){
+    pong.update(event.delta);
+  }
+
+  function onLeapUpdate(event){
+    pong.setRightPlayerYPos(leapController.rightHandYPos);
+    pong.setLeftPlayerYPos(leapController.leftHandYPos);
+
+//    console.log('leap did update');
+
+  }
+
+</script>
+</head>
+<body onLoad="init();">
+  <p><h1>Pong Motion</h1></p>
+  <div id="score"></div>
+  <div id="canvasDiv">
+    <canvas id="canvas" width="800" height="400"></canvas>
+  </div>  
+  
+</body>
+</html>
