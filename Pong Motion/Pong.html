@@ -28,6 +28,7 @@
   var gameFPS = 60;
   var controllerOptions = {enableGestures: false};
   var leapController;
+  var _leapConnected = false;
 
   function init(){
     if (window.top != window) {
@@ -50,8 +51,8 @@
     createjs.Ticker.setFPS(gameFPS);
     createjs.Ticker.addEventListener("tick", onTickerTick);
 
-    scoreDiv = document.getElementById("score");
-    scoreDiv.innerHTML = 'Score  0 - 0 ';
+    //scoreDiv = document.getElementById("score");
+    //scoreDiv.innerHTML = 'Score  0 - 0 ';
     
     stage.update();  
   }
@@ -62,25 +63,54 @@
   }
 
   function onTickerTick(event){
-    pong.update(event.delta);
+    if (_leapConnected)
+      pong.update(event.delta);
   }
 
   function onLeapUpdate(event){
-    pong.setRightPlayerYPos(leapController.rightHandYPos);
-    pong.setLeftPlayerYPos(leapController.leftHandYPos);
+    _leapConnected = true;
 
-//    console.log('leap did update');
+    var leftStatus = document.getElementById("leftStatus");
+    var rightStatus = document.getElementById("rightStatus");
 
+    if (leapController.leftHandAvailable){
+      pong.setLeftPlayerYPos(leapController.leftHandYPos);
+      leftStatus.innerHTML = "On";
+    }else{
+      leftStatus.innerHTML = "Off";
+    }
+
+    if (leapController.rightHandAvailable){
+      pong.setRightPlayerYPos(leapController.rightHandYPos);  
+      rightStatus.innerHTML = "On";
+    }else{
+      rightStatus.innerHTML = "Off";
+    }    
   }
 
 </script>
 </head>
 <body onLoad="init();">
-  <p><h1>Pong Motion</h1></p>
-  <div id="score"></div>
+<div id="header">
+  <h1>Pong Motion</h1>
+  <div id="score"><p> Please connect a Leap Motion device and enable Web Applications in the settings.</p></div>
+  <div id="leapStatus"> 
+    <table>
+      <tr>
+        <td style="color :#eee">Left hand status</td> <td id="leftStatus" style="color :#F00; font-weight: bold;" > Off </td>
+        <td style="color :#eee">Right hand status</td> <td id="rightStatus" style="color :#F00; font-weight: bold;"> Off </td>
+    </table>
+  
+</div>
+  
+    
+</div>
   <div id="canvasDiv">
     <canvas id="canvas" width="800" height="400"></canvas>
-  </div>  
+  </div> 
+  <div id="footer">
+    Javier Quevedo-Fernández © 2013, Dordrecht
+  </div> 
   
 </body>
 </html>
