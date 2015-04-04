@@ -1,5 +1,6 @@
 pong-leap-motion-js
 ===================
+A tiny POC for using the Leap Motion JS library with CreateJS.
 
 A pong game using the Leap Motion as a controller. The game is written in Javascript and uses the CreateJS framework.
 
